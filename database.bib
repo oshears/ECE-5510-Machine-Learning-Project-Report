@@ -1,0 +1,232 @@
+@article{Diehl2015,
+abstract = {In order to understand how the mammalian neocortex is performing computations, two things are necessary; we need to have a good understanding of the available neuronal processing units and mechanisms, and we need to gain a better understanding of how those mechanisms are combined to build functioning systems. Therefore, in recent years there is an increasing interest in how spiking neural networks (SNN) can be used to perform complex computations or solve pattern recognition tasks. However, it remains a challenging task to design SNNs which use biologically plausible mechanisms (especially for learning new patterns), since most such SNN architectures rely on training in a rate-based network and subsequent conversion to a SNN. We present a SNN for digit recognition which is based on mechanisms with increased biological plausibility, i.e., conductance-based instead of current-based synapses, spike-timing-dependent plasticity with time-dependent weight change, lateral inhibition, and an adaptive spiking threshold. Unlike most other systems, we do not use a teaching signal and do not present any class labels to the network. Using this unsupervised learning scheme, our architecture achieves 95{\%} accuracy on the MNIST benchmark, which is better than previous SNN implementations without supervision. The fact that we used no domain-specific knowledge points toward the general applicability of our network design. Also, the performance of our network scales well with the number of neurons used and shows similar performance for four different learning rules, indicating robustness of the full combination of mechanisms, which suggests applicability in heterogeneous biological neural networks.},
+author = {Diehl, Peter U. and Cook, Matthew},
+doi = {10.3389/fncom.2015.00099},
+file = {::},
+issn = {1662-5188},
+journal = {Frontiers in Computational Neuroscience},
+keywords = {Classification,Digit recognition,STDP,Spiking neural network,Unsupervised learning},
+month = {aug},
+number = {AUGUST},
+pages = {99},
+publisher = {Frontiers Media S.A.},
+title = {{Unsupervised learning of digit recognition using spike-timing-dependent plasticity}},
+url = {http://journal.frontiersin.org/Article/10.3389/fncom.2015.00099/abstract},
+volume = {9},
+year = {2015}
+}
+@article{Orchard2015,
+abstract = {Creating datasets for Neuromorphic Vision is a challenging task. A lack of available recordings from Neuromorphic Vision sensors means that data must typically be recorded specifically for dataset creation rather than collecting and labeling existing data. The task is further complicated by a desire to simultaneously provide traditional frame-based recordings to allow for direct comparison with traditional Computer Vision algorithms. Here we propose a method for converting existing Computer Vision static image datasets into Neuromorphic Vision datasets using an actuated pan-tilt camera platform. Moving the sensor rather than the scene or image is a more biologically realistic approach to sensing and eliminates timing artifacts introduced by monitor updates when simulating motion on a computer monitor. We present conversion of two popular image datasets (MNIST and Caltech101) which have played important roles in the development of Computer Vision, and we provide performance metrics on these datasets using spike-based recognition algorithms. This work contributes datasets for future use in the field, as well as results from spike-based algorithms against which future works can compare. Furthermore, by converting datasets already popular in Computer Vision, we enable more direct comparison with frame-based approaches.},
+author = {Orchard, Garrick and Jayawant, Ajinkya and Cohen, Gregory K. and Thakor, Nitish},
+doi = {10.3389/fnins.2015.00437},
+file = {::},
+issn = {1662-453X},
+journal = {Frontiers in Neuroscience},
+keywords = {Benchmarking,Computer vision,Datasets,Neuromorphic Vision,Sensory processing},
+month = {nov},
+number = {NOV},
+pages = {437},
+publisher = {Frontiers Research Foundation},
+title = {{Converting Static Image Datasets to Spiking Neuromorphic Datasets Using Saccades}},
+url = {http://journal.frontiersin.org/Article/10.3389/fnins.2015.00437/abstract},
+volume = {9},
+year = {2015}
+}
+@article{Hazan2018,
+abstract = {The development of spiking neural network simulation software is a critical component enabling the modeling of neural systems and the development of biologically inspired algorithms. Existing software frameworks support a wide range of neural functionality, software abstraction levels, and hardware devices, yet are typically not suitable for rapid prototyping or application to problems in the domain of machine learning. In this paper, we describe a new Python package for the simulation of spiking neural networks, specifically geared toward machine learning and reinforcement learning. Our software, called BindsNET 1 , enables rapid building and simulation of spiking networks and features user-friendly, concise syntax. BindsNET is built on the PyTorch deep neural networks library, facilitating the implementation of spiking neural networks on fast CPU and GPU computational platforms. Moreover, the BindsNET framework can be adjusted to utilize other existing computing and hardware backends; e.g., TensorFlow and SpiNNaker. We provide an interface with the OpenAI gym library, allowing for training and evaluation of spiking networks on reinforcement learning environments. We argue that this package facilitates the use of spiking networks for large-scale machine learning problems and show some simple examples by using BindsNET in practice.},
+author = {Hazan, Hananel and Saunders, Daniel J. and Khan, Hassaan and Patel, Devdhar and Sanghavi, Darpan T. and Siegelmann, Hava T. and Kozma, Robert},
+doi = {10.3389/fninf.2018.00089},
+file = {::},
+issn = {1662-5196},
+journal = {Frontiers in Neuroinformatics},
+keywords = {GPU-computing,Machine learning,PyTorch,Python (programming language),Reinforcement learning (RL),Spiking Network},
+month = {dec},
+pages = {89},
+publisher = {Frontiers Media S.A.},
+title = {{BindsNET: A Machine Learning-Oriented Spiking Neural Networks Library in Python}},
+url = {https://www.frontiersin.org/article/10.3389/fninf.2018.00089/full},
+volume = {12},
+year = {2018}
+}
+@article{Deng2020,
+abstract = {Artificial neural networks (ANNs), a popular path towards artificial intelligence, have experienced remarkable success via mature models, various benchmarks, open-source datasets, and powerful computing platforms. Spiking neural networks (SNNs), a category of promising models to mimic the neuronal dynamics of the brain, have gained much attention for brain inspired computing and been widely deployed on neuromorphic devices. However, for a long time, there are ongoing debates and skepticisms about the value of SNNs in practical applications. Except for the low power attribute benefit from the spike-driven processing, SNNs usually perform worse than ANNs especially in terms of the application accuracy. Recently, researchers attempt to address this issue by borrowing learning methodologies from ANNs, such as backpropagation, to train high-accuracy SNN models. The rapid progress in this domain continuously produces amazing results with ever-increasing network size, whose growing path seems similar to the development of deep learning. Although these ways endow SNNs the capability to approach the accuracy of ANNs, the natural superiorities of SNNs and the way to outperform ANNs are potentially lost due to the use of ANN-oriented workloads and simplistic evaluation metrics. In this paper, we take the visual recognition task as a case study to answer the questions of “what workloads are ideal for SNNs and how to evaluate SNNs makes sense”. We design a series of contrast tests using different types of datasets (ANN-oriented and SNN-oriented), diverse processing models, signal conversion methods, and learning algorithms. We propose comprehensive metrics on the application accuracy and the cost of memory {\&} compute to evaluate these models, and conduct extensive experiments. We evidence the fact that on ANN-oriented workloads, SNNs fail to beat their ANN counterparts; while on SNN-oriented workloads, SNNs can fully perform better. We further demonstrate that in SNNs there exists a trade-off between the application accuracy and the execution cost, which will be affected by the simulation time window and firing threshold. Based on these abundant analyses, we recommend the most suitable model for each scenario. To the best of our knowledge, this is the first work using systematical comparisons to explicitly reveal that the straightforward workload porting from ANNs to SNNs is unwise although many works are doing so and a comprehensive evaluation indeed matters. Finally, we highlight the urgent need to build a benchmarking framework for SNNs with broader tasks, datasets, and metrics.},
+author = {Deng, Lei and Wu, Yujie and Hu, Xing and Liang, Ling and Ding, Yufei and Li, Guoqi and Zhao, Guangshe and Li, Peng and Xie, Yuan},
+doi = {10.1016/j.neunet.2019.09.005},
+issn = {18792782},
+journal = {Neural Networks},
+keywords = {Artificial neural networks,Benchmark,Deep learning,Neuromorphic computing,Spiking neural networks},
+month = {jan},
+pages = {294--307},
+pmid = {31586857},
+publisher = {Elsevier Ltd},
+title = {{Rethinking the performance comparison between SNNS and ANNS}},
+volume = {121},
+year = {2020}
+}
+@article{Beigne2019,
+abstract = {Neuromorphic computing is henceforth a major research field for both academic and industrial actors. As opposed to Von Neumann machines, brain-inspired processors aim at bringing closer the memory and the computational elements to efficiently evaluate machine-learning algorithms. Recently, Spiking Neural Networks, a generation of cognitive algorithms employing computational primitives mimicking neuron and synapse operational principles, have become an important part of deep learning. They are expected to improve the computational performance and efficiency of neural networks, but are best suited for hardware able to support their temporal dynamics. In this survey, we present the state of the art of hardware implementations of spiking neural networks and the current trends in algorithm elaboration from model selection to training mechanisms. The scope of existing solutions is extensive; we thus present the general framework and study on a case-by-case basis the relevant particularities. We describe the strategies employed to leverage the characteristics of these event-driven algorithms at the hardware level and discuss their related advantages and challenges.},
+author = {Beigne, Edith and Bouvier, Maxence and Valentian, Alexandre and Mesquida, Thomas and Rummens, Francois and Reyboz, Marina and Vianello, Elisa},
+doi = {10.1145/3304103},
+journal = {J. Emerg. Technol. Comput. Syst},
+keywords = {CCS Concepts:,Computer systems organization → Neural networks KEYWORDS Neuromorphic computing, spiking, event driven, neural network, hardware, machine learning, Spiking neural networks, neuromorphic computing, hardware implementation ACM Reference format:,Hardware → Emerging architectures;},
+title = {{Spiking Neural Networks Hardware Implementations and Challenges: A Survey}},
+url = {https://doi.org/10.1145/3304103},
+volume = {15},
+year = {2019}
+}
+@techreport{Kolesnikov,
+abstract = {Transfer of pre-trained representations improves sample efficiency and simplifies hyperparameter tuning when training deep neural networks for vision. We revisit the paradigm of pre-training on large supervised datasets and fine-tuning the model on a target task. We scale up pre-training, and propose a simple recipe that we call Big Transfer (BiT). By combining a few carefully selected components, and transferring using a simple heuristic, we achieve strong performance on over 20 datasets. BiT performs well across a surprisingly wide range of data regimes-from 1 example per class to 1 M total examples. BiT achieves 87.5{\%} top-1 accuracy on ILSVRC-2012, 99.4{\%} on CIFAR-10, and 76.3{\%} on the 19 task Visual Task Adaptation Benchmark (VTAB). On small datasets, BiT attains 76.8{\%} on ILSVRC-2012 with 10 examples per class, and 97.0{\%} on CIFAR-10 with 10 examples per class. We conduct detailed analysis of the main components that lead to high transfer performance.},
+archivePrefix = {arXiv},
+arxivId = {1912.11370v3},
+author = {Kolesnikov, Alexander and Beyer, Lucas and Zhai, Xiaohua and Puigcerver, Joan and Yung, Jessica and Gelly, Sylvain and Houlsby, Neil},
+eprint = {1912.11370v3},
+file = {::},
+title = {{Big Transfer (BiT): General Visual Representation Learning}}
+}
+@techreport{Wan2013,
+abstract = {We introduce DropConnect, a generalization of Dropout (Hinton et al., 2012), for regular-izing large fully-connected layers within neu-ral networks. When training with Dropout, a randomly selected subset of activations are set to zero within each layer. DropCon-nect instead sets a randomly selected subset of weights within the network to zero. Each unit thus receives input from a random subset of units in the previous layer. We derive a bound on the generalization performance of both Dropout and DropCon-nect. We then evaluate DropConnect on a range of datasets, comparing to Dropout, and show state-of-the-art results on several image recognition benchmarks by aggregating multiple DropConnect-trained models.},
+author = {Wan, Li and Zeiler, Matthew and Zhang, Sixin and Lecun, Yann and Fergus, Rob},
+file = {::},
+title = {{Regularization of Neural Networks using DropConnect}},
+year = {2013}
+}
+@techreport{Maass1997,
+abstract = {The computational power of formal models for networks of spiking neurons is compared with that of other neural network models based on McCulloch Pitts neurons (i.e., threshold gates), respectively, sigmoidal gates. In particular it is shown that networks of spiking neurons are, with regard to the number of neurons that are needed, computationally more powerful than these other neural network models. A concrete biologically relevant function is exhibited which can be computed by a single spiking neuron (for biologically reasonable values of its parameters), but which requires hundreds of hidden units on a sigmoidal neural net. On the other hand, it is known that any function that can be computed by a small sigmoidal neural net can also be computed by a small network of spiking neurons. This article does not assume prior knowledge about spiking neurons, and it contains an extensive list of references to the currently available literature on computations in networks of spiking neurons and relevant results from neurobiology. 1. DEFINITIONS AND MOTIVATIONS If one classifies neural network models according to their computational units, one can distinguish three different generations. The first generation is based on McCulloch-Pitts neurons as computational units. These are also referred to as perceptrons or threshold gates. They give rise to a variety of neural network models such as multilayer perceptrons (also called threshold circuits), Hopfield nets, and Boltzmann machines. A characteristic feature of these models is that they can only give digital output. In fact they are universal for computations with digital input and output, and every boolean function can be computed by some multilayer perceptron with a single hidden layer. The second generation is based on computational units that apply an "activation function" with a continuous set of possible output values to a weighted sum (or polynomial) of the inputs. Common activation functions are the sigmoid function a(y) = 1/(1 + e-y) and the linear Acknowledgements: I would like to thank Eduardo Sontag and an anonymous referee for their helpful comments. Written under partial support by the Austrian Science Fund. Requests for reprints should be sent to W. Maass,},
+author = {Maass, Wolfgang},
+file = {::},
+keywords = {Computational complexity,Integrate-and-fire neutron,Lower bounds,Sigmoidal neural nets,Spiking neuron},
+number = {9},
+pages = {1659--1671},
+title = {{Networks of Spiking Neurons: The Third Generation of Neural Network Models}},
+volume = {10},
+year = {1997}
+}
+
+@article{Bouvier2019,
+abstract = {Neuromorphic computing is henceforth a major research field for both academic and industrial actors. As opposed to Von Neumann machines, brain-inspired processors aim at bringing closer the memory and the computational elements to efficiently evaluate machine learning algorithms. Recently, spiking neural networks, a generation of cognitive algorithms employing computational primitives mimicking neuron and synapse operational principles, have become an important part of deep learning. They are expected to improve the computational performance and efficiency of neural networks, but they are best suited for hardware able to support their temporal dynamics. In this survey, we present the state of the art of hardware implementations of spiking neural networks and the current trends in algorithm elaboration from model selection to training mechanisms. The scope of existing solutions is extensive; we thus present the general framework and study on a case-by-case basis the relevant particularities. We describe the strategies employed to leverage the characteristics of these event-driven algorithms at the hardware level and discuss their related advantages and challenges.},
+author = {Bouvier, Maxence and Valentian, Alexandre and Mesquida, Thomas and Rummens, Francois and Reyboz, Marina and Vianello, Elisa and Beigne, Edith},
+doi = {10.1145/3304103},
+file = {::},
+issn = {15504840},
+journal = {ACM Journal on Emerging Technologies in Computing Systems},
+keywords = {Event driven,Hardware,Hardware implementation,Machine learning,Neural network,Neuromorphic computing,Spiking,Spiking neural networks},
+month = {apr},
+number = {2},
+publisher = {Association for Computing Machinery},
+title = {{Spiking neural networks hardware implementations and challenges: A survey}},
+volume = {15},
+year = {2019}
+}
+@article{burkitt2006review,
+  title={A review of the integrate-and-fire neuron model: I. Homogeneous synaptic input},
+  author={Burkitt, Anthony N},
+  journal={Biological cybernetics},
+  volume={95},
+  number={1},
+  pages={1--19},
+  year={2006},
+  publisher={Springer}
+}
+
+@article{vasilaki2009spike,
+  title={Spike-based reinforcement learning in continuous state and action space: when policy gradient methods fail},
+  author={Vasilaki, Eleni and Fr{\'e}maux, Nicolas and Urbanczik, Robert and Senn, Walter and Gerstner, Wulfram},
+  journal={PLoS Comput Biol},
+  volume={5},
+  number={12},
+  pages={e1000586},
+  year={2009},
+  publisher={Public Library of Science}
+}
+
+@article{meftah2010segmentation,
+  title={Segmentation and edge detection based on spiking neural network model},
+  author={Meftah, Boudjelal and Lezoray, Olivier and Benyettou, Abdelkader},
+  journal={Neural Processing Letters},
+  volume={32},
+  number={2},
+  pages={131--146},
+  year={2010},
+  publisher={Springer}
+}
+
+@incollection{thorpe1998rank,
+  title={Rank order coding},
+  author={Thorpe, Simon and Gautrais, Jacques},
+  booktitle={Computational neuroscience},
+  pages={113--118},
+  year={1998},
+  publisher={Springer}
+}
+
+@ARTICLE{Sjostrom:2010,
+AUTHOR = {Sjöström, J.  and Gerstner, W. },
+TITLE   = {{S}pike-timing dependent plasticity},
+YEAR    = {2010},
+JOURNAL = {Scholarpedia},
+VOLUME  = {5},
+NUMBER  = {2},
+PAGES   = {1362},
+DOI     = {10.4249/scholarpedia.1362},
+NOTE    = {revision \#184913}
+}
+
+@article{li2020spiking,
+  title={Spiking Neural Network Learning, Benchmarking, Programming and Executing},
+  author={Li, Guoqi and Deng, Lei and Chua, Yansong and Li, Peng and Neftci, Emre O and Li, Haizhou},
+  journal={Frontiers in Neuroscience},
+  volume={14},
+  year={2020},
+  publisher={Frontiers Media SA}
+}
+
+@article{zeki2015massively,
+  title={A massively asynchronous, parallel brain},
+  author={Zeki, Semir},
+  journal={Philosophical Transactions of the Royal Society B: Biological Sciences},
+  volume={370},
+  number={1668},
+  pages={20140174},
+  year={2015},
+  publisher={The Royal Society}
+}
+
+@book{hawkins2004intelligence,
+  title={On intelligence},
+  author={Hawkins, Jeff and Blakeslee, Sandra},
+  year={2004},
+  publisher={Macmillan}
+}
+
+@book{shanahan2015technological,
+  title={The technological singularity},
+  author={Shanahan, Murray},
+  year={2015},
+  publisher={MIT press}
+}
+
+@inproceedings{ma2019stochastic,
+  title={Stochastic Gradient Descent on Modern Hardware: Multi-core CPU or GPU? Synchronous or Asynchronous?},
+  author={Ma, Yujing and Rusu, Florin and Torres, Martin},
+  booktitle={2019 IEEE International Parallel and Distributed Processing Symposium (IPDPS)},
+  pages={1063--1072},
+  year={2019},
+  organization={IEEE}
+}
+
+@web_page{Gupta2020,
+   author = {Pradeep Gupta},
+   journal = {NVIDIA Developer Blog},
+   title = {CUDA Refresher: The CUDA Programming Model},
+   url = {https://developer.nvidia.com/blog/cuda-refresher-cuda-programming-model/},
+   year = {2020},
+}
+
+@inproceedings{iakymchuk2012fast,
+  title={Fast spiking neural network architecture for low-cost FPGA devices},
+  author={Iakymchuk, Taras and Rosado, Alfredo and Frances, Jose V and Batallre, Manuel},
+  booktitle={7th International Workshop on Reconfigurable and Communication-Centric Systems-on-Chip (ReCoSoC)},
+  pages={1--6},
+  year={2012},
+  organization={IEEE}
+}
