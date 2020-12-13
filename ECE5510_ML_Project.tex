@@ -174,10 +174,8 @@
 
 
 % *** SPECIALIZED LIST PACKAGES ***
-%
+
 \usepackage{algorithmic}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
 \usepackage{algorithm}
 % algorithmic.sty was written by Peter Williams and Rogerio Brito.
 % This package provides an algorithmic environment fo describing algorithms.
@@ -351,7 +349,7 @@
 
 
 % correct bad hyphenation here
-\hyphenation{op-tical net-works semi-conduc-tor}
+\hyphenation{op-tical net-works semi-conduc-tor, dependent}
 
 
 \begin{document}
@@ -450,14 +448,14 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ABSTRACT ABSTRACT ABSTRACT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{abstract}
-The abstract goes here.
-\end{abstract}
+% \begin{abstract}
+% The abstract goes here.
+% \end{abstract}
 
 % Note that keywords are not normally used for peerreview papers.
-\begin{IEEEkeywords}
-multiprocessing, spiking neural networks, neuromorphic computing, graphics processing unit, CUDA
-\end{IEEEkeywords}
+% \begin{IEEEkeywords}
+% multiprocessing, spiking neural networks, neuromorphic computing, graphics processing unit, CUDA
+% \end{IEEEkeywords}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -476,7 +474,7 @@ multiprocessing, spiking neural networks, neuromorphic computing, graphics proce
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{INTRODUCTION}
+\section{Introduction}
 % The very first letter is a 2 line initial drop letter followed
 % by the rest of the first word in caps.
 % 
@@ -497,23 +495,22 @@ multiprocessing, spiking neural networks, neuromorphic computing, graphics proce
 
 \subsection{Evolution of Modern Computer Architecture}
 
-Modern computer architecture evolved from the Von Neumann architecture and their designs have carried with them a bottleneck in the system bus which makes a multiprocessor design very unscalable. One method to increase throughput despite this shortcoming is to utilize specialized processing hardware such as graphic processing units (GPU). A GPU is composed of many specialized arithmetic processing units (ALU) for matrix multiplication and can typically perform hundreds of such calculations simultaneously.
+Modern computer architecture evolved from the Von Neumann architecture and their designs have carried with them a bottleneck in the system bus which makes a multiprocessor design very unscalable. One method to increase throughput despite this shortcoming is to utilize specialized processing hardware such as graphic processing units (GPU). A GPU is composed of many specialized arithmetic processing units (ALUs) used for matrix multiplication and can typically perform hundreds of such calculations simultaneously.
 
 \subsection{Artificial Neural Networks}
 
-Artificial neural networks (ANN) are a group of algorithms designed to mimic the behavior of biological neural networks seen in the brain with nodes or neuron models and their connections being the ANN's most basic elements. These ANN are formed by training. During training, inputs, whose expected outputs are known, are fed into the ANN. These inputs then propagate through the system producing outputs which may or may not be correct. This process is known as \emph{forward propagation}. The ANN then performs a process known as \emph{back propagation} in which parameters of this network are adjusted compensating for the difference between the actual output and the desired output. Traditionally in ANN, it is the forward propagation which utilizes matrix multiplication and can potentially use GPU to speedup this part of the training process. More specialized neuromorphic hardware exists where each neuron model is represented in hardware. Where neuromorphic hardware is more scalable for power and integrated circuit (IC) real estate compared to the GPU, both suffer from the unscalability of multiplier circuits [ , ].
+Artificial neural networks (ANN) are a group of algorithms designed to mimic the behavior of biological neural networks, nodes (neuron models) and their connections (synapses) being the ANN's most basic elements. These ANNs are taught to perform tasks by training. During training, inputs, whose expected outputs are known, are fed into the ANN. These inputs propagate through the system producing outputs which may or may not be correct. This process is known as \emph{forward propagation}. The ANN then performs a process known as \emph{back propagation} in which parameters of this network are adjusted to compensate for the difference between the actual output and the desired output. Traditionally in an ANN, it is the forward propagation which utilizes matrix multiplication, a process that can be sped up by using a GPU. More specialized neuromorphic hardware exists where each neuron model is represented in hardware. Neuromorphic hardware is more scalable for power and integrated circuit (IC) real estate compared to the GPU, which suffers from the unscalability of multiplier circuits \cite{Bouvier2019}\cite{li2020spiking}. Neuromorphic hardware often simulates the behavior of spiking neural networks.
 
 \subsection{Spiking Neural Networks}
 
-Spiking neural networks (SNN) are a form of ANN that more closely simulate natural neural networks. They are inherently asynchronous because SNNs do not have optimizers like traditional ANN. Optimization in ANNs traditionally needs to be synchronous, meaning how one node optimizes affects the other nodes' optimization. To contrast, SNN nodes simply wait to receive spikes from other nodes within a simulation time step. The state of one node is not necessarily dependent on the state of all nodes at a given instance. A node in a SNN is only focused on the nodes whose connections are coming into it. However, there is a synchronous aspect to SNNs in that a node must wait to continue operating until all nodes have reached the end of the time step\cite{Bouvier2019}.
+Spiking neural networks (SNN) are a form of ANN that more closely simulates the behavior of natural neural networks \cite{Maass1997}. They are inherently asynchronous because SNNs do not have optimizers like traditional ANN. Optimization in ANNs traditionally needs to be synchronous: one synapse's optimizations will have an affect on another synapse's optimization. To contrast, SNN synapses simply wait to receive spikes from nodes within a simulation time step. The state of one synapses is not necessarily influenced by the state of other synapses in a network. A synapse in an SNN is only focused on the nodes whose connections are coming into it; however, there is a synchronous aspect to SNNs in that its elements must wait to continue operating until all elements have reached the end of the time step \cite{Bouvier2019}.
 
-\par
+SNNs are massively parallel because of the asynchronous nature of the individual nodes. In each layer, a node can potentially be simulated in its own thread. In this article's implementation of a multithreaded SNN, there are groups of nodes (of the same layer) being simulated by a single thread; however, studying the performance on this architecture may provide insight for the development of future architectures. 
 
-SNN are massively parallel because of the asynchronous nature of each node. In each layer, a node can potentially be simulated in its own thread. In this article's implementation of a multithreaded SNN, there are groups of nodes (of the same layer) being simulated by a single thread; however, studying the performance on this architecture may provide insight for the development of future architectures. 
+\subsection{Project Overview}
 
-\subsection{Article Organization}
+This article is inspired by the work seen in \cite{ma2019stochastic}. Ma et al. study the performance of a multithreaded stochastic gradient descent (SGD) training algorithm on a distributed, non-uniform memory access (NUMA) architecture. In our project we add multithreading to an SNN algorithm and benchmark its performance against a multithreaded convolutional neural network (CNN) when learning images in the MNIST dataset.
 
-This article, inspired by the work seen in \cite{ma2019stochastic}, studies the performance of SNN on distributed or non-uniform memory access (NUMA) architecture as opposed to the more traditional Von Neumann uniform memory access (UMA) architecture. First, this article 
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
 
@@ -618,32 +615,26 @@ This article, inspired by the work seen in \cite{ma2019stochastic}, studies the 
 
 \subsection{Spiking Neural Network Mechanics}
 
-Spiking neural networks (SNNs) are fundamentally from ANNs because their operation occurs over a period of time. At each time step the neurons in an SNN receive weighted spikes that either increment or decrements the neuron's membrane potential. Once the membrane potential of a neuron exceeds a predetermined threshold value, the neuron itself emits a spike. After emitting a spike, the neuron resets its membrane potential to its initial value and stops its membrane potential from changing for a period of time called the "refractory period".
+Spiking neural networks (SNNs) are fundamentally different from ANNs because their operation occurs over a period of time. At each time step, the neurons in an SNN receive weighted spikes that either increment or decrement the neuron's membrane potential. Once the membrane potential of a neuron exceeds a predetermined threshold value, the neuron emits a spike. After emitting a spike, the neuron resets its membrane potential to its initial value and stops the membrane potential from changing for a period of time called the "refractory period".
 
-There are three components that are needed to simulate an SNN:
-
-\begin{itemize}
-\item an encoding scheme
-\item a neuron model
-\item a learning rule
-\end{itemize}
+There are three components needed to simulate an SNN: (1) an encoding scheme, (2) a neuron model, and (3) a learning rule.
 
 \subsubsection{Encoding Schemes}
 
-Encoding schemes are necessary to specify the way that numerical input data is converted into spikes that occur over time. Typically each feature of the input data is mapped to an input neuron that generates spikes for the rest of the SNN. Our project looks at two different styles of encoding data: rate coding and temporal coding.
+Encoding schemes are necessary to specify the way that numerical input data is converted into spike trains. Typically each feature of the input data is mapped to an input neuron which generates spikes based on the feature's intensity. Our project looks at two different styles of encoding data: rate coding and temporal coding.
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=1.75in]{encodings.png}
-\caption{Spiking Neural Network Encoding Schemes}
-\label{fig_sim}
-\end{figure}
+% \begin{figure}[!t]
+% \centering
+% \includegraphics[width=1.75in]{encodings.png}
+% \caption{Spiking Neural Network Encoding Schemes}
+% \label{fig_sim}
+% \end{figure}
 
-\textbf{Rate coding} works by adjusting the rate at which input neurons fire based on the intensity of the input data. Input neurons mapped to higher intensities fire more frequently, while input neurons mapped to lower intensities fire less. In several studies, the firing rate is also determined using a Poisson distribution, where higher intensity input neurons are more likely to fire. While rate coding is a noise-resistant way to represent data, it causes the network to consume more power when implemented in hardware.
+\textbf{Rate coding} works by adjusting the \emph{rate} at which input neurons fire based on the intensity of the input data. Input neurons mapped to higher intensities fire more frequently, while input neurons mapped to lower intensities fire less. While rate coding is a noise-resistant way to represent data, it causes the network to consume more power when implemented in hardware.
 
-\textbf{Temporal coding} works by adjusting the time at which input neurons fire based on the intensity of the input data. Input neurons mapped to higher intensities fire earlier compared to inputs with lower intensities. Rank order coding is one example of temporal coding where the input neurons fire in a discrete order determined by their intensities. Temporal coding is more power efficient than rate coding because of its sparsity, however, it is very susceptible to noise \cite{thorpe1998rank}.
+\textbf{Temporal coding} works by adjusting the \emph{time} at which input neurons fire based on the intensity of the input data. Input neurons mapped to higher intensities fire earlier compared to inputs with lower intensities. Temporal coding is more power efficient than rate coding because of its sparsity, however, it is very susceptible to noise \cite{thorpe1998rank}.
 
-A visual representation of the behaviors of these two encoding schemes is shown in \textbf{Figure 1}.
+% A visual representation of the behaviors of these two encoding schemes is shown in \textbf{Figure 1}.
 
 
 % LIF Model
@@ -651,34 +642,25 @@ A visual representation of the behaviors of these two encoding schemes is shown 
 
 Another component required for simulating SNNs is the neuron model. Similar to the activation function in an ANN, the neuron model uses the inputs provided at the synapses to determine the output value of the neuron. The primary difference between the two is that a neuron model in an SNN will not provide any output if its membrane potential has not reached a certain threshold.
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=2.5in]{lif_model.png}
-\caption{Leaky Integrate-and-Fire (LIF) Neuron Model}
-\label{fig_sim}
-\end{figure}
+% \begin{figure}[!t]
+% \centering
+% \includegraphics[width=2.5in]{lif_model.png}
+% \caption{Leaky Integrate-and-Fire (LIF) Neuron Model}
+% \label{fig_sim}
+% \end{figure}
 
-In our project, we conducted experiments using the \textbf{leaky integrate-and-fire (LIF)} neuron model. In this model, weighted spikes that arrive at the neuron increase the membrane potential normally. However, at each timestep, the membrane potential constantly decays towards a resting value. This behavior prevents neurons that are not frequently stimulated from firing \cite{burkitt2006review}.
-
-A visual representation of the behaviors of this neuron model is shown in \textbf{Figure 2}.
+In our project, we conducted experiments using the \textbf{leaky integrate-and-fire (LIF)} neuron model. In this model, weighted spikes that arrive at the neuron increase the membrane potential normally. The membrane potential also decays towards a resting value at each timestep. This behavior prevents neurons that are not frequently stimulated from firing \cite{burkitt2006review}.
 
 % 
 \subsubsection{Spike-Timing Dependent Plasticity}
 
-\textbf{Spike-timing dependent plasticity (STDP)} is a common unsupervised learning rule used to train SNNs. In this learning technique, the influence that a pre-synaptic neuron has on a post-synaptic neuron is adjusted based on the time elapsed between their emitted spikes. As shown in \textbf{Figure 3}, if a pre-synaptic neuron (i) fires just before a post-synaptic neuron (j), then the weight of the synapse connecting those two neurons is incremented (i.e., the pre-synaptic neuron firing had a strong correlation to the post-synaptic neuron firing). Alternatively, if a pre-synaptic neuron (i) fires just after a post-synaptic neuron (j), then the weight between those two neurons is decremented (i.e., the pre-synaptic neuron firing had no correlation to the post-synaptic neuron firing) \cite{Sjostrom:2010}. STDP is an inherently asynchronous algorithm since each synapse performs its weight updates independently from the other synapses.
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=2.5in]{stdp.png}
-\caption{Leaky Integrate-and-Fire (LIF) Neuron Model}
-\label{fig_sim}
-\end{figure}
+\textbf{Spike-timing dependent plasticity (STDP)} is a common unsupervised learning rule used to train SNNs. In this learning technique, the influence that a pre-synaptic neuron has on a post-synaptic neuron is adjusted based on the time elapsed between their emitted spikes. If a pre-synaptic neuron fires just before a post-synaptic neuron, then the weight of the synapse connecting those two neurons is incremented (i.e., the pre-synaptic neuron firing had a strong correlation to the post-synaptic neuron firing) \cite{Sjostrom:2010}. STDP is an inherently asynchronous algorithm since each synapse performs its weight updates independently from the other synapses.
 
 \subsection{Convolutional Neural Network}
-Convolutional neural networks (CNN) are traditional ANNs with the added functionality given by specialized layers with the most important of these special layers being the convolutional whose function is to learn and form filters that best assist in the classification process.
+Convolutional neural networks (CNN) are traditional ANNs with added functionality given by specialized layers with the most important of these special layers being the convolutional. The convolutional layer's function is to learn and form filters that best assist in the classification process. CNNs that are composed of 2 dimensional convolutional layers are ideal for image processing.
 
 \subsection{Computer Architecture}
-This article presents the two main architectures used in this work. The first is Virginia Tech's RLogin which is a NUMA based architecture consisting of 64 Intel Xeon(R) Gold 5218 (at 2.30GHz) CPUs. Virginia Tech's GPU cluster was composed of one Nvidia Tesla T4 (rev a1) GPU and eight Intel Xeon(R) E5-2630 v3 (at 2.40 GHz) CPUs. CNNs that are composed of 2 dimensional convolutional layers are ideal for image processing.
+This section presents the two main architectures used in this work. The first is Virginia Tech's RLogin which is a NUMA based architecture consisting of 64 Intel Xeon(R) Gold 5218 (at 2.30GHz) CPUs. The second, Virginia Tech's GPU cluster, was composed of one Nvidia Tesla T4 (rev a1) GPU and eight Intel Xeon(R) E5-2630 v3 (at 2.40 GHz) CPUs. 
 
 \begin{table}[hbt!]
 \caption {Hardware Specifications} \label{tab:title}
@@ -702,79 +684,101 @@ Cores & 16 perCPU & 2560CUDA (totalGPU) + 8perCPU \\
 Blocks & -- & 4 Per MP \\
 \hline
 Threads & 32 perCPU & 2560 \\
-\hline
-L1 (i+d) Cache & 32+32 KB & 32+32 KB (for CPU) \\
-\hline
-L2 Cache & 1024 KB & 4096 KB (for CPU) \\
-\hline
-L3 (shared) & 22528 KB & 16384 KB (for CPU) \\
+% \hline
+% L1 (i+d) Cache & 32+32 KB & 32+32 KB (for CPU) \\
+% \hline
+% L2 Cache & 1024 KB & 4096 KB (for CPU) \\
+% \hline
+% L3 (shared) & 22528 KB & 16384 KB (for CPU) \\
 \hline
 RAM/global & 383 GB & 16 GB for GPU + 32 GB for CPU \\
 \hline
 \end{tabular}
 %\caption{\label{tab:}Hardware Specifications}
+\label{table_hardware}
 \end{table}
 
-TABLE 1 depicts the architecture's further specifications. Each NUMA node are connected by high-bandwidth interconnects and DRAM access on another node is transferred over the interconnects. This transfer takes longer than locally accessed memory. 
+\textbf{Table \ref{table_hardware}} depicts the architectures' further specifications. Each of the NUMA nodes are connected by high-bandwidth interconnects and DRAM access. Data transfer between the nodes takes longer than locally accessed memory. 
 \par
-The GPU is composed of multiple streaming multiprocessors (MP). Each MP is driven by the CUDA programming model. Thousands of threads can potentially run simultaneously on the GPU. But the work passed to the GPU is specialized and done so in a manner similar to passing a function from the CPU \cite{Gupta2020}. The passed information consists of a logical thread identifier that allows the different threads to work on different sections of the data \cite{Gupta2020}.
+The GPU is composed of multiple streaming multiprocessors (MP). Each MP is driven by the CUDA programming model. Thousands of threads can potentially run simultaneously on the GPU. But the work passed to the GPU is specialized and done so in a manner similar to passing a function from the CPU \cite{Gupta2020}. The passed information consists of a logical thread identifier that allows the threads to work on different sections of the data \cite{Gupta2020}.
 
 \subsection{Related Work}
 
 \subsubsection{Stochastic Gradient Descent on Hardware}
 
-In their research, Ma et al. (2019) benchmarked two different styles of multithreaded stochastic gradient descent (SGD) on both CPU and GPU hardware \cite{ma2019stochastic}. Their synchronous SGD algorithm allowed the threads to concurrently compute the gradient based on their training samples, and required the threads to synchronize after this calculation so that the main thread could perform the weight updates. Alternatively, their asynchronous SGD allowed the threads to both concurrently compute the gradient based on their training samples and update the weights accordingly.
+In their research, Ma et al. (2019) benchmarked two different styles of multithreaded stochastic gradient descent (SGD) on both CPU and GPU hardware \cite{ma2019stochastic}. Their synchronous SGD algorithm allowed the threads to concurrently compute the gradient based on the training samples, and required threads to synchronize after this calculation so that the main thread could perform the weight updates. Alternatively, their asynchronous SGD allowed the threads to both concurrently compute the gradient based on their training samples and update the weights accordingly.
 
-The group found that when synchronous SGD was run using a GPU it sped up the training time by approximately 7X for deep neural networks compared to the CPU implementation. Additionally, asynchronous SGD performed on a multithreaded CPU outperformed the GPU version by more than 10X.
+The group found that when synchronous SGD was run using a GPU it sped up the training time by approximately 7X for deep neural networks when compared to the CPU implementation. Additionally, asynchronous SGD performed on a multithreaded CPU outperformed the GPU version by more than 10X.
 
 \subsubsection{BindsNET}
 
+BindsNET is an SNN simulation framework developed in Python by Hazan et al. \cite{Hazan2018}. It provides users with an efficient way to construct and simulate SNNs in a way the is consistent with PyTorch's tensor objects.
+
+Since BindsNET is built on top of PyTorch, it also supports running the SNNs tensor operations on an NVIDIA GPU using CUDA. BindsNET also provides several neural models and encoding schemes to construct a variety of different SNNs.
+
 \subsubsection{Fast Spiking Neural Network Architecture for Low-cost FPGA Devices}
 \par
-The source \cite{iakymchuk2012fast} implements a SNN on a Xilinx Spartan 3 FPGA. Each neuron utilizes a Postsynaptic Potential (PSP) function and membrane potential threshold evaluation for generating the output spikes. Modeling a real biological system requires thousands of neurons. This sources proposes a SNN architecture that is able to be implemented using relatively little hardware resources but still represent biological networks. 
+% The source \cite{iakymchuk2012fast} implements a SNN on a Xilinx Spartan 3 FPGA. Each neuron utilizes a Postsynaptic Potential (PSP) function and membrane potential threshold evaluation for generating the output spikes. Modeling a real biological system requires thousands of neurons. This sources proposes a SNN architecture that is able to be implemented using relatively little hardware resources but still represent biological networks. 
 
-An amalgamation of both serial and parallel structures optimizes the neurons' required computation time. The presented results illustrate that the computation speed of the proposed SNN architecture and a fully parallelized architecture are approximate with the proposed providing a resource reduction of up to 70\%.
+% An amalgamation of both serial and parallel structures optimizes the neurons' required computation time. The presented results illustrate that the computation speed of the proposed SNN architecture and a fully parallelized architecture are approximate with the proposed providing a resource reduction of up to 70\%.
+
+The source \cite{iakymchuk2012fast} implements an SNN on a Xilinx Spartan 3 FPGA. Modeling a real biological system requires thousands of neurons. This sources proposes an SNN architecture that is able to be implemented using relatively little hardware resources but still represent biological networks. This was accomplished by a combination of both serial and parallel structures that are used to optimize the neurons' required computation time. The presented results illustrates an architecture whose performance is comparable to similar implementations but reduces resource consumption by 70\%.
 
 \section{Experimental Design}
-In order to capture any improvements provided by the addition of multithreading to an SNN implementation, an SNN architecture that classifies the MNIST dataset with high accuracy was chosen. This architecture consists of four layers whose dimensions are respectively 784x320x50x10 LIF neuron models. 
+In order to capture any improvements provided by the addition of multithreading to an SNN implementation, an SNN architecture that classifies the MNIST dataset was chosen. This architecture consists of four layers whose dimensions are respectively 784x320x50x10 LIF neuron models. 
 \par
-For comparison, a CNN was utilized. Just as with the SNN, the CNN's architecture was chosen based on its ability to classify the MNIST dataset with high accuracy. This architecture consists of six major layers. The first two being two-dimensional convolutional layers with the dimensions of 10x20 and max-pool sublayers coming after the convolutional layers. (The input layer took an input of size 784 (28x28).) Next a drop-out layer was used followed by three traditional ANN whose dimensions are respectively 320x50x10.
+For comparison, a CNN was utilized. Just as with the SNN, the CNN's architecture was chosen based on its ability to classify the MNIST dataset. This architecture consisted of six layers: two convolutional (size 10x20), a drop-out, and three traditional ANN layers (320x50x10).
 \par
-The architectures were contracted using PyTorch in Python 3.6. The SNN also utilized BindsNET framework for simulation. 
+The architectures were contracted using PyTorch in Python 3.6. The SNN also utilizes the BindsNET framework for simulation. The experiments measured throughput which is defined as the number of forward and back propagations performed per second.  
+
 \subsection{Multithreaded Convolutional Neural Network Algorithm}
+
+Many different methods for multithreading the CNN were experimented with before using the final architecture and method. PyTorch methods such as \verb|DataParallel| and \verb|DistributedDataParallel| on different NUMA architectures such as Google CoLab were experimented with before settling on the Python method \verb|process| and Virginia Tech's RLogin to take the final data points.
+
+\begin{algorithm}
+\caption{Multithreaded CNN Pseudocode}
+\begin{algorithmic}
+\FOR{$ii$ \textbf{in} range(num\_processes)}
+    Process(target=train,args=(ii,args,model,dataset))
+    pr.start() \break
+    prArray.append(pr)
+\ENDFOR
+\FOR{$pr$ \textbf{in} prArray}
+    pr.join()
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Multithreaded Spiking Neural Network Algorithm}
 
-Before attempting to add parallelism to the SNN, we first used cProfile to determine where the the algorithm was spending most of its execution time. \textbf{Figure 4} shows the results of running the 320x50x10 SNN in cProfile. The results indicate that that 80\% of the execution time is spent performing updates at the network's layers, synapses and weights. For each of these tasks, the network spent the most time performing matrix multiplication.
+Before attempting to add parallelism to the SNN, we first used cProfile to determine where the the algorithm was spending most of its execution time. \textbf{Figure \ref{fig_cprofile}} shows the results of running the 320x50x10 SNN in cProfile. The results indicate that that 78\% of the execution time is spent performing updates at the network's layers (40\%), synapses (22\%) and weights (16\%). For each of these tasks, the network spent the most time performing matrix multiplication.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{cprofile.png}
 \caption{Results from running cProfile on a single-threaded SNN implementation.}
-\label{fig_sim}
+\label{fig_cprofile}
 \end{figure}
 
-Given these results, we focused on modifying the algorithm so that the layer, synapse and weight updates could be performed in parallel using multiple threads. The initial approach taken utilized Python's \verb|Thread| class. 
+Given these results, we focused on modifying the algorithm so that the layer, synapse and weight updates could be performed in parallel using multiple threads. The initial approach taken utilized Python's \verb|Thread| and \verb|Queue| classes to provide tasks for the worker threads to perform. The throughput results collected in our project were taken using these classes. Later in the project we transitions to using \verb|ThreadPool| to improve the execution of our multithreaded algorithm. This implementation is shown in \textbf{Algorithm \ref{alg_snn}}. 
 
 \begin{algorithm}
 \caption{Multithreaded SNN Pseudocode}
 \begin{algorithmic}
-%
 \FOR{$t=0$ \TO num\_timesteps}
-\FOR{$l=0$ \TO num\_layers} do layer[l].forward()
-\ENDFOR
-\FOR{$c=0$ \TO num\_connections}
-\ENDFOR
-\FOR{$c=0$ \TO num\_connections}
-\ENDFOR
+    \FOR{$c=0$ \TO num\_connections} ThreadPool.apply(connection[c].get\_inputs())
+    \ENDFOR
+    \FOR{$l=0$ \TO num\_layers} ThreadPool.apply(layer[l].forward())
+    \ENDFOR
+    \FOR{$c=0$ \TO num\_connections} ThreadPool.apply(connection[c].update\_weights())
+    \ENDFOR
 \ENDFOR
 \end{algorithmic}
+\label{alg_snn}
 \end{algorithm}
 
 \subsection{Experimental Procedure} 
-
-
-
+A Python virtual environment was created on both of Virginia Tech's CPU and GPU clusters and the CNN and SNN were trained using the MNIST dataset. On the CPU cluster, both the CNN and the SNN were executed with varying thread counts from 1 to 40 in steps of 4. This was repeated for each given batch size of 32, 64 and 128. This processes was repeated for the SNN given the encoding schemes of rate coding and temporal coding. Because of the limited number of CPUs, the same process above was executed on the GPU cluster, however, the thread count varied from 1 to 16 and the step size was either 1 or 2.
 
 
 \section{Results}
@@ -790,22 +794,24 @@ Given these results, we focused on modifying the algorithm so that the layer, sy
 
 
 \subsection{CNN Results}
-\textbf{Figure 5} and \textbf{Figure 6} illustrate the results collected from the multithreaded CNN executed on both CPU and GPU systems respectively. While the multithreading did provide improvements, it fell short of utilizing the architecture's full potential. In \textbf{Figure 5}, it can be seen that for all three executions, the peak throughput is reached at about 20 threads. After, as thread count increases, the throughput began to decreased. The greatest throughput measured is when the batch size is 128 at 507 ops/s. For this batch size, the throughput at one thread is 252 ops/s. This translates to a speedup of about 2. Using Amdahl's law, it is calculated that, at this CNN's implementations best, the percentage of instructions being parallelized is about 52.5\%. 
+\textbf{Figure \ref{fig_cnn_cpu}} and \textbf{Figure \ref{fig_cnn_gpu}} illustrate the results collected from the multithreaded CNN executed on both CPU and GPU systems respectively. While the multithreading did provide improvements, it fell short of utilizing the architecture's full potential. In \textbf{Figure \ref{fig_cnn_cpu}}, it can be seen that for all three executions, the peak throughput is reached at about 20 threads. After, as thread count increases, the throughput began to decrease. The greatest throughput measured is when the batch size is 128 at 507 ops/s. For this batch size, the throughput at one thread is 252 ops/s. This translates to a speedup of about 2. Using Amdahl's law, it is calculated that, at this CNN's implementations best, the percentage of instructions being parallelized is about 52.5\%. 
 \par
-In both \textbf{Figure 5} and \text{Figure 6}, it can be seen that the CNN execution with the batch size of 64 clearly output performs the execution with batch size of 32. A similar but less significant 
+The GPU executions (\textbf{Figure \ref{fig_cnn_gpu}}) did not see any improvements in throughput when compared to the CPU executions. It should be understood that this is an unfair comparison as the processors in the clusters were different, with the CPU NUMA having the superior processors. When only the CPUs are utilized on the GPU NUMA and compared with the throughput when both CPU and GPU are utilized, slight performance gains are observed.
+\par
+In both \textbf{Figure \ref{fig_cnn_cpu}} and \textbf{Figure \ref{fig_cnn_gpu}}, it can be seen that the CNN execution with the batch size of 64 clearly outperforms the execution with batch size of 32. A similar but less significant performance increase can be seen between the batch size 128 execution and the batch size 64 execution. Each thread processes a batch independently so this trend can be explained by the additional overhead of having to processes twice as many batches in the batch size 32 execution compared to the batch size 64 execution.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{CNN_CPU_Throughput.png}
 \caption{Results from running the CNN Variations on the CPU}
-\label{fig_sim}
+\label{fig_cnn_cpu}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{CNN_GPU_Throughput.png}
 \caption{Results from running the CNN Variations on the GPU}
-\label{fig_sim}
+\label{fig_cnn_gpu}
 \end{figure}
 
 
@@ -817,45 +823,47 @@ In both \textbf{Figure 5} and \text{Figure 6}, it can be seen that the CNN execu
 \centering
 \includegraphics[width=\linewidth]{snn_results1.png}
 \caption{Results from running the SNN Variations on the CPU}
-\label{fig_sim}
+\label{fig_snn_cpu}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{snn_results2.png}
 \caption{Results from running the SNN Variations on the GPU}
-\label{fig_sim}
+\label{fig_snn_gpu}
 \end{figure}
 
-\textbf{Figure 8} and \textbf{Figure 9} show the results from running the multithreaded SNN algorithm on the CPU and GPU systems respectively. As seen in each of the figures, adding threads to perform layer, synapse and weight updates substantially decreased the throughput of the system. On the CPU-based system, the best multithreaded execution is approximately 50\% slower than the single threaded execution. Similarly, on the GPU-based system, the best multithreaded execution is approximately 20\% slower than the single threaded execution.
+\textbf{Figure \ref{fig_snn_cpu}} and \textbf{Figure \ref{fig_snn_gpu}} show the results from running the multithreaded SNN algorithm on the CPU and GPU systems respectively. As seen in each of the figures, adding threads to perform layer, synapse and weight updates substantially decreased the throughput of the system. On the CPU-based system, the best multithreaded execution is approximately 50\% slower than the single threaded execution. Similarly, on the GPU-based system, the best multithreaded execution is approximately 20\% slower than the single threaded execution.
 
 
 \subsection{Multithreaded Analysis}
 
-We investigate the reason for this decrease in throughput by individually timing the threads instantiated by the \verb|ThreadPool| object. \textbf{Figure 9} shows the results of measuring (1) the average time it takes for a thread to get its job from the pool, (2) the average time it takes for a thread to execute this task, and (3) the average amount of time it takes for all tasks to complete. These measurements were recorded for the layer update and weight update tasks. It can be observed that the initialization of a thread takes up nearly 50\% of the execution time for both layer and weight updates. We suspect that because Python is a higher level scripting language, the multithreading features of the language have not been well optimized. Python further does not allow users to specify the priority of threads. Using a lower level programming language such as C or C++ may be able to improve the performance here by reducing the time it takes for threads to receive their tasks. 
+We investigate the reason for this decrease in the SNN's throughput by individually timing the threads instantiated by the \verb|ThreadPool| object. \textbf{Figure \ref{fig_snn_thread_profile}} shows the results of measuring (1) the average time it takes for a thread to get its job from the pool, (2) the average time it takes for a thread to execute this task, and (3) the average amount of time it takes for all tasks to complete. These measurements were recorded for the layer update and weight update tasks. It can be observed that the initialization of a thread takes up nearly 50\% of the execution time for both layer and weight updates. We suspect that because Python is a higher level scripting language, the multithreading features of the language have not been well optimized. Python further does not allow users to specify the priority of threads. Using a lower level programming language such as C or C++ may be able to improve the performance here by reducing the time it takes for threads to receive their tasks. 
 
-Additionally, threads initialized in the multithreaded algorithm take a longer amount of time to perform their task than the single threaded version. We believe that the policy employed by the scheduler is partially the reason for this, since worker threads may compete with other processing running on the system. To further understand this issue, we analyzed the start and end times of threads performing layer updates as shown in \textbf{Figure 10}. The results of this experiment show all of the threads begin processing their layer updates at approximately the same time. However, the time at which a given thread completes its update occurs later if the thread was initialized at a later time (i.e., a higher thread index). At this time we cannot conclude why this behavior was observed, but we suspect that it is again, scheduler related. 
+Additionally, threads initialized in the multithreaded algorithm take a longer amount of time to perform their task than the single threaded version. We believe that the policy employed by the scheduler is partially the reason for this, since worker threads may compete with other processes running on the system. To further understand this issue, we analyzed the start and end times of threads performing layer updates as shown in \textbf{Figure \ref{fig_snn_thread_times}}. The results of this experiment show all of the threads begin processing their layer updates at approximately the same time. However, the time at which a given thread completes its update occurs later if the thread was initialized at a later time (i.e., a higher thread index). At this time we cannot conclude why this behavior was observed, but we suspect that it is again scheduler related. 
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{thread_profile.png}
 \caption{Results from benchmarking ThreadPool tasks (Layer Updates and Weight Updates)}
-\label{fig_sim}
+\label{fig_snn_thread_profile}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{thread_start_times.png}
 \caption{Results from measuring ThreadPool task start and end times (Layer Updates)}
-\label{fig_sim}
+\label{fig_snn_thread_times}
 \end{figure}
 
 
 \section{Conclusion and Future Work}
-The conclusion goes here.
 
+Our CNN experiments showed that although GPUs have the capability to improve matrix multiplication speed during forward propagation, certain parts of the backpropagation algorithm could only occur on the CPU and thus bottlenecked the execution. The reason for this is because machines on GPU cluster featured only 8 lower end CPUs compared to those on the dedicated 64 CPU cluster. Using higher batch sizes with the CNN also resulted in greater throughput since threads were capable of processing more data at each step.
 
+The SNN experiments showed adding multithreading functionality to the network created a large overhead which doubled the execution time in most cases. This overhead was likely caused by the the time it took to provide tasks to the threads in the pool, in addition to the scheduling policy of the CPU. Furthermore, using temporal coding, a more sparse encoding scheme compared to rate coding, reduced the throughput of the SNN by about 80\%.
 
+Future work on this topic could attempt to look at SNN implementations on lower level programming languages such as C and C++. Brian2GENN appears to be a promising alternative since the framework was built with multiprocessing in mind \cite{stimberg2020brian2genn}. Lastly, emulating the SNN on custom hardware (i.e., FPGA and ASIC) may yield better throughput.
 
 
 % if have a single appendix:
